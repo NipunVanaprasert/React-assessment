@@ -43,7 +43,6 @@ function App() {
         }
       })
       .then((data) => {
-        console.log(data);
         const updatedUsers = dataJson.map((user) => {
           if (user.id === data.id) {
             user.name = data.name;
@@ -74,9 +73,7 @@ function App() {
             toast.success("delete success");
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
@@ -104,7 +101,7 @@ function App() {
           />
         </Route>
         <Route path="/view/:id">
-          <View data={dataJson} data2={data2} />
+          <View />
         </Route>
         <Route path="*">
           <Notfound />

@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 import classes from "./table.module.css";
 import fireDb from "../../utils/firebase";
 import { toast } from "react-toastify";
+
 const Tables = (props) => {
   const { data, data2 } = props;
-
+  const view = (id) => {
+    localStorage.setItem("users", JSON.stringify(data[id - 1]));
+  };
+  const view2 = (id) => {
+    localStorage.setItem("users", JSON.stringify(data2[id]));
+  };
   const deleteData = (id) => {
     if (
       window.confirm("Are you sure that your wanted to delete that contact?")
@@ -36,7 +42,14 @@ const Tables = (props) => {
               <td>{data.phone}</td>
               <td className={classes["group-button"]}>
                 <Link to={`/view/${data.id}`}>
-                  <Button variant="secondary">view</Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      view(data.id);
+                    }}
+                  >
+                    view
+                  </Button>
                 </Link>
                 <Link to={`/update/${data.id}`}>
                   <Button>update</Button>
@@ -64,7 +77,14 @@ const Tables = (props) => {
               <td>{data2[id].phone}</td>
               <td className={classes["group-button"]}>
                 <Link to={`/view/${id}`}>
-                  <Button variant="secondary">view</Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      view2(id);
+                    }}
+                  >
+                    view
+                  </Button>
                 </Link>
                 <Link to={`/update/${id}`}>
                   <Button>update</Button>
