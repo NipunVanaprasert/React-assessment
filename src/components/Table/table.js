@@ -77,14 +77,7 @@ const Tables = (props) => {
               <td>{data2[id].phone}</td>
               <td className={classes["group-button"]}>
                 <Link to={`/view/${id}`}>
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      view2(id);
-                    }}
-                  >
-                    view
-                  </Button>
+                  <Button variant="secondary">view</Button>
                 </Link>
                 <Link to={`/update/${id}`}>
                   <Button>update</Button>

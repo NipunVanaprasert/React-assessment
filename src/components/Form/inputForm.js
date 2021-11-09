@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import fireDb from "../../utils/firebase";
 import { ToastContainer, toast, Zoom } from "react-toastify";
+import axios from "axios";
 
 const Inputform = (props) => {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ const Inputform = (props) => {
   const { id } = useParams();
   const history = useHistory();
   const [data, setData] = useState({});
+  const datafirebase = axios.create({
+    baseURL: `https://login-auth-5e306-default-rtdb.asia-southeast1.firebasedatabase.app/`,
+  });
 
   const [valid, setValid] = useState({
     name: true,
@@ -96,14 +100,24 @@ const Inputform = (props) => {
     let reg = new RegExp("[^0-9]");
     if (id) {
       if (id.match(reg)) {
-        fireDb
-          .child(`users/${id}`)
-          .get()
-          .then((snap) => {
-            if (snap.exists()) {
-              setData(snap.val());
+        datafirebase.get(`/users.json`).then((res) => {
+          console.log(res.data);
+          Object.keys(res.data).map((ids) => {
+            if (ids === id) {
+              console.log(res.data[ids]);
+              setData(res.data[ids]);
             }
           });
+        });
+
+        // fireDb
+        //   .child(`users/${id}`)
+        //   .get()
+        //   .then((snap) => {
+        //     if (snap.exists()) {
+        //       setData(snap.val());
+        //     }
+        //   });
       } else {
         Object.keys(props.data).map((ids, index) => {
           if (props.data[ids].id === Number(id)) {
@@ -124,8 +138,12 @@ const Inputform = (props) => {
       <form onSubmit={submitHandler} className="mt-2">
         <Row>
           <Col xs={12} sm={5} md={4} lg={3}>
-            <label htmlFor="name">Name</label>
-
+            <label
+              htmlFor="name"
+              className={`${valid.name ? "" : classes.invalid}`}
+            >
+              Name
+            </label>
             <input
               id="name"
               type="text"
@@ -143,9 +161,12 @@ const Inputform = (props) => {
             ) : (
               <p className={classes.invalid}>please input your name</p>
             )}
-
-            <label htmlFor="email">E-mail</label>
-
+            <label
+              htmlFor="email"
+              className={`${valid.email ? "" : classes.invalid}`}
+            >
+              E-mail
+            </label>
             <input
               id="email"
               type="email"
@@ -163,7 +184,12 @@ const Inputform = (props) => {
             ) : (
               <p className={classes.invalid}>please input your email</p>
             )}
-            <label htmlFor="phone">Contact</label>
+            <label
+              htmlFor="phone"
+              className={`${valid.phone ? "" : classes.invalid}`}
+            >
+              Contact
+            </label>
 
             <input
               id="phone"
@@ -171,7 +197,7 @@ const Inputform = (props) => {
               className={`${classes.input} ${
                 valid.phone ? "" : classes.invalidInput
               }`}
-              placeholder="Text Input"
+              placeholder="Contact Input"
               ref={inputContact}
               defaultValue={data.phone || ""}
               onChange={onChangedContact}
@@ -180,9 +206,8 @@ const Inputform = (props) => {
             {valid.phone ? (
               ""
             ) : (
-              <p className={classes.invalid}>please input your phone</p>
+              <p className={classes.invalid}>please input your contact</p>
             )}
-
             {props.buttonName === "Add" ? (
               <Button
                 className="mt-2"
