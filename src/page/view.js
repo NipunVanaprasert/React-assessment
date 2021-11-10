@@ -1,8 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Container, Spinner } from "react-bootstrap";
+import { Button, Card, Container, Spinner } from "react-bootstrap";
 import Header from "../components/Header/header";
 import axios from "axios";
+import classes from "./styles/view.module.css";
 
 const View = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const View = () => {
       setLoading(false);
     }
   }, []);
-  console.log(data.name);
+
   return (
     <Fragment>
       <Header />
@@ -53,22 +54,30 @@ const View = () => {
         </div>
       ) : (
         <Container>
-          <div style={{ margin: "1rem" }}>
-            <h5>Id: {id}</h5>
-            <h5>Name: {data.name}</h5>
-            <h5>E-mail: {data.email}</h5>
-            <h5>Contact: {data.phone}</h5>
-            <Link to="/">
-              <Button
-                type="button"
-                onClick={() => {
-                  localStorage.removeItem("users");
-                }}
-              >
-                Back
-              </Button>
-            </Link>
-          </div>
+          <Card className="mt-5">
+            <Card.Header bsPrefix={classes.bg}>
+              <h5>Information</h5>
+            </Card.Header>
+            <Card.Body>
+              <div style={{ margin: "1rem" }}>
+                <p>ID: {id}</p>
+                <p>Name: {data.name}</p>
+                <p>E-mail: {data.email}</p>
+                <p>Contact: {data.phone}</p>
+                <Link to="/">
+                  <Button
+                    type="button"
+                    variant="dark"
+                    onClick={() => {
+                      localStorage.removeItem("users");
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Link>
+              </div>
+            </Card.Body>
+          </Card>
         </Container>
       )}
     </Fragment>

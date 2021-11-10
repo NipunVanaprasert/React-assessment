@@ -2,28 +2,31 @@ import React from "react";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import classes from "./table.module.css";
-import fireDb from "../../utils/firebase";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Tables = (props) => {
   const { data, data2 } = props;
   const view = (id) => {
     localStorage.setItem("users", JSON.stringify(data[id - 1]));
   };
-  const view2 = (id) => {
-    localStorage.setItem("users", JSON.stringify(data2[id]));
-  };
   const deleteData = (id) => {
+    const Db = axios.create({
+      baseURL: `https://login-auth-5e306-default-rtdb.asia-southeast1.firebasedatabase.app`,
+    });
     if (
       window.confirm("Are you sure that your wanted to delete that contact?")
     ) {
-      fireDb.child(`users/${id}`).remove();
+      axios.delete(
+        `https://login-auth-5e306-default-rtdb.asia-southeast1.firebasedatabase.app/users/${id}.json`
+      );
+
       toast.success("Delete Success");
     }
   };
   return (
     <Table striped bordered hover responsive>
-      <thead>
+      <thead style={{ background: "#212529", color: "whitesmoke" }}>
         <tr>
           <th>ID</th>
           <th>Name</th>
